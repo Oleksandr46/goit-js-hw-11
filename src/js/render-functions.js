@@ -12,17 +12,28 @@ const lightbox = new SimpleLightbox('.gallery a', {
 
 export function createGallery(images) {
   const markup = images
-    .map(image => {
-      return `<li class="gallery-item">
-            <a href="${image.largeImageURL}">
-              <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy"/>
+    .map(
+      ({
+        largeImageURL,
+        webformatURL,
+        tags,
+        likes,
+        views,
+        comments,
+        downloads,
+      }) =>
+        `<li class="gallery-item">
+            <a href="${largeImageURL}">
+              <img class="gallery-img" src="${webformatURL}" alt="${tags}" loading="lazy"/>
             </a>
-            <p><b>likes</b>: ${image.likes}</p>
-            <p><b>views</b>: ${image.views}</p>
-            <p><b>comments</b>: ${image.comments}</p>
-            <p><b>downloads</b>: ${image.downloads}</p>
-          </li>`;
-    })
+            <div class="gallery-wrapper">
+              <p class="wrapper-list"><b>likes</b>${likes}</p>
+              <p class="wrapper-list"><b>views</b>${views}</p>
+              <p class="wrapper-list"><b>comments</b>${comments}</p>
+              <p class="wrapper-list"><b>downloads</b>${downloads}</p>
+            </div>
+          </li>`
+    )
     .join('');
   refs.gallery.innerHTML = markup;
   lightbox.refresh();
