@@ -7,7 +7,6 @@ import {
   hideLoader,
 } from './js/render-functions';
 import { getImagesByQuery } from './js/pixabay-api';
-// import { createGallery, hideLoader } from './js/render-functions';
 
 const refs = {
   form: document.querySelector('.form'),
@@ -23,18 +22,20 @@ refs.form.addEventListener('submit', e => {
     });
     return;
   }
-  clearGallery();
   showLoader();
+  clearGallery();
 
   getImagesByQuery(query)
     .then(data => {
-      if (data.hits.length === 0) {
+      if (!data?.hits?.length) {
         iziToast.error({
           message:
             'Sorry, there are no images matching your search query. Please try again!',
         });
         return;
       }
+      e.target.reset();
+
       createGallery(data.hits);
     })
     .catch(error => {
@@ -45,5 +46,4 @@ refs.form.addEventListener('submit', e => {
     .finally(() => {
       hideLoader();
     });
-  e.target.reset();
 });
